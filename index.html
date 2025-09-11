@@ -11,10 +11,11 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-image: url('https://i.imgur.com/ai9CPEB.jpeg');
+            background-color: #000; /* Alterado para cor preta */
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+            color: #fff; /* Alterado para cor do texto branco */
         }
     </style>
 </head>
@@ -22,9 +23,13 @@
 
     <!-- Header -->
     <header class="w-full max-w-5xl text-center py-8 relative">
-        <h1 class="text-4xl sm:text-5xl font-extrabold text-indigo-600 mb-2 text-shadow-lg">AchadoTeca</h1>
-        <p class="text-lg text-indigo-500">Explore nosso catálogo e encontre sua próxima leitura.</p>
-        <button id="cart-icon-btn" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-indigo-600 text-white p-3 rounded-full shadow-lg hover:bg-indigo-700 transition">
+        <!-- Contêiner para os botões de gêneros -->
+        <!-- Alinhado verticalmente no lado esquerdo da tela -->
+        <div class="absolute top-1/2 left-4 sm:left-8 transform -translate-y-1/2 flex flex-col items-start space-y-2 sm:space-y-4" id="genre-buttons">
+            <!-- Botões de gêneros serão injetados aqui via JavaScript -->
+        </div>
+        <img src="https://i.imgur.com/nTXYYLi.png" alt="Logo AchadoTeca" class="mx-auto w-64 sm:w-80 mb-2">
+        <button id="cart-icon-btn" class="absolute top-1/2 right-8 transform -translate-y-1/2 bg-emerald-600 text-white p-3 rounded-full shadow-lg hover:bg-emerald-700 transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18l-1.5 9H6M6 15h12m-3-6H9m-3 6l2.25-4.5H18M12 18a2 2 0 100 4 2 2 0 000-4z" />
             </svg>
@@ -35,7 +40,7 @@
     <!-- Main Content - Book Grid -->
     <main class="w-full max-w-5xl">
         <div id="book-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-4">
-            <!-- Livros serão injetados aqui via JavaScript -->
+            <p class="text-center text-gray-200 col-span-full">Carregando livros...</p>
         </div>
     </main>
 
@@ -55,8 +60,8 @@
                 <div class="text-center sm:text-left">
                     <h3 id="details-book-title" class="text-xl sm:text-2xl font-bold text-gray-900 mb-2"></h3>
                     <p id="details-book-description" class="text-gray-700 mb-4"></p>
-                    <p id="details-book-price" class="text-3xl font-bold text-indigo-600 mb-4"></p>
-                    <button id="details-add-to-cart-btn" class="w-full sm:w-auto bg-indigo-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-indigo-700 transition">
+                    <p id="details-book-price" class="text-3xl font-bold text-emerald-600 mb-4"></p>
+                    <button id="details-add-to-cart-btn" class="w-full sm:w-auto bg-emerald-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-emerald-700 transition">
                         Adicionar ao Carrinho
                     </button>
                 </div>
@@ -80,9 +85,9 @@
             </div>
             <div class="mt-6 pt-4 border-t border-gray-200 flex justify-between items-center">
                 <span class="text-xl font-bold text-gray-800">Total:</span>
-                <span id="cart-total" class="text-3xl font-bold text-indigo-600">R$ 0,00</span>
+                <span id="cart-total" class="text-3xl font-bold text-emerald-600">R$ 0,00</span>
             </div>
-            <button id="checkout-from-cart-btn" class="w-full bg-indigo-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-indigo-700 transition transform hover:scale-105 mt-6">
+            <button id="checkout-from-cart-btn" class="w-full bg-emerald-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-emerald-700 transition transform hover:scale-105 mt-6">
                 Finalizar Compra
             </button>
         </div>
@@ -100,66 +105,53 @@
                 </button>
             </div>
             <div class="flex flex-col items-center">
-                <p class="text-lg font-semibold mb-3">Escaneie o QR Code para pagar via Pix:</p>
-                <!-- Imagem do QR Code -->
-                <img src="https://i.imgur.com/fBSRAIe.png" alt="QR Code Pix" class="w-48 h-48 rounded-lg mt-4 shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/192x192/000000/FFFFFF?text=QR+Code+Indispon%C3%ADvel';">
-                <p class="text-lg font-semibold text-gray-700 mt-4">Ou (11)94060-0244</p>
+                <p class="text-lg font-semibold text-black mb-3">Escaneie o QR Code para pagar via Pix:</p>
+                <p class="text-2xl font-bold text-emerald-600 mb-4">Total: <span id="checkout-total">R$ 0,00</span></p>
+                <!-- O QR Code será gerado dinamicamente com base no valor total -->
+                <img id="pix-qr-code" src="" alt="QR Code Pix" class="w-48 h-48 rounded-lg mt-4 shadow-md">
+                <p class="mt-4 text-center text-lg text-gray-700">Ou (11) 94060-0244</p>
+                
+                <!-- Nova seção de Retirada no Local -->
+                <div class="mt-8 pt-4 border-t border-gray-200 w-full text-center">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">RETIRADA NO LOCAL</h3>
+                    <p class="text-gray-700 text-center">
+                        Rua Catarina Fazio Antoniazzi, N°89<br>
+                        Helena Maria - Osasco/SP
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // Dados dos livros
-        const books = [
-            {
-                id: 1,
-                title: "Adolescências, Juventudes e Participação",
-                price: 10.00,
-                imageUrl: "https://i.imgur.com/7expm1g.png",
-                description: "Um estudo aprofundado sobre o papel do jovem na sociedade."
-            },
-            {
-                id: 2,
-                title: "Olhos de Azeviche",
-                price: 10.00,
-                imageUrl: "https://i.imgur.com/z8Lk8HA.png",
-                description: "Uma história emocionante sobre o amor e a superação."
-            },
-            {
-                id: 3,
-                title: "Palavras de Encantamento",
-                price: 10.00,
-                imageUrl: "https://i.imgur.com/ozasY0h.png",
-                description: "Poesias que transportam o leitor para um mundo mágico."
-            },
-            {
-                id: 4,
-                title: "Gibis do Cascão",
-                price: 30.00,
-                imageUrl: "https://i.imgur.com/G1B0ex7.png",
-                description: "Diversas histórias divertidas com o personagem mais limpinho da Turma da Mônica."
-            },
-            {
-                id: 5,
-                title: "Manoel de Barros",
-                price: 10.00,
-                imageUrl: "https://i.imgur.com/waPqQOz.png",
-                description: "Poemas que revelam a simplicidade e a profundidade das coisas do cotidiano."
-            },
-            {
-                id: 7,
-                title: "O Corpo Fala",
-                price: 20.00,
-                imageUrl: "https://i.imgur.com/nQnznHD.png",
-                description: "Um guia prático sobre a linguagem corporal e a comunicação não verbal."
-            },
-            {
-                id: 8,
-                title: "A Dieta Ideal",
-                price: 15.00,
-                imageUrl: "https://i.imgur.com/aw1TJtg.png",
-                description: "Um livro sobre como manter uma alimentação saudável e equilibrada."
-            }
+    <!-- Message Box -->
+    <div id="message-box" class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-gray-800 text-white p-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 z-50"></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, query, where, getDocs, getCountFromServer } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global variables provided by the environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        let userId = null;
+        let books = [];
+
+        // Pre-defined book data for seeding the database
+        const predefinedBooks = [
+            { id: 1, title: "Adolescências, Juventudes e Participação", price: 10.00, imageUrl: "https://i.imgur.com/7expm1g.png", genre: "Sociologia", description: "Uma análise profunda e multifacetada sobre a complexidade das adolescências e juventudes na sociedade contemporânea. O livro explora como a participação ativa dos jovens molda a cultura, a política e as relações sociais, abordando temas como identidade, ativismo digital e os desafios de transição para a vida adulta. Uma leitura essencial para educadores, pesquisadores e todos interessados em compreender a dinâmica da nova geração." },
+            { id: 2, title: "Olhos de Azeviche", price: 10.00, imageUrl: "https://i.imgur.com/z8Lk8HA.png", genre: "Romance", description: "Em 'Olhos de Azeviche', somos levados a uma jornada emocionante através das paisagens e da alma de um protagonista em busca de redenção. A narrativa, rica em detalhes e sentimentos, desvenda um passado misterioso e um futuro incerto, onde o amor se torna o farol em meio à tempestade. Prepare-se para se perder em uma trama de paixão, segredos e a inquebrável força do espírito humano." },
+            { id: 3, title: "Palavras de Encantamento", price: 10.00, imageUrl: "https://i.imgur.com/ozasY0h.png", genre: "Poesia", description: "Uma coletânea de poesias que celebra a beleza singela do cotidiano e a grandiosidade dos sentimentos mais profundos. Com versos que fluem como melodia, o autor nos convida a redescobrir o encanto nas pequenas coisas e a abraçar a magia da linguagem. Cada poema é um convite à reflexão e um portal para um mundo de imaginação e sensibilidade." },
+            { id: 4, title: "Gibis do Cascão", price: 30.00, imageUrl: "https://i.imgur.com/G1B0ex7.png", genre: "HQ", description: "Mergulhe no universo hilário e, sim, limpinho, do Cascão! Esta edição especial reúne as melhores e mais engraçadas histórias do personagem mais avesso à água da Turma da Mônica. Com aventuras cheias de criatividade e trapalhadas, os gibis do Cascão são uma garantia de diversão para todas as idades, provando que a amizade e a alegria podem superar qualquer medo de banho." },
+            { id: 5, title: "Manoel de Barros", price: 10.00, imageUrl: "https://i.imgur.com/waPqQOz.png", genre: "Poesia", description: "Através da lente poética de Manoel de Barros, o leitor é convidado a enxergar o mundo sob uma nova luz. Este livro é uma ode à simplicidade, à natureza e à infância da linguagem. Com uma escrita que subverte as regras gramaticais e celebra a pureza dos seres e objetos, o autor nos ensina a 'desinventar' as coisas e a encontrar a poesia no lixo, no rio, no ser de cada um." },
+            { id: 7, title: "O Corpo Fala", price: 20.00, imageUrl: "https://i.imgur.com/nQnznHD.png", genre: "Psicologia", description: "Um clássico da comunicação não verbal, 'O Corpo Fala' é um guia indispensável para entender as mensagens ocultas por trás de nossos gestos, posturas e expressões faciais. Repleto de ilustrações e análises detalhadas, o livro desvenda como nosso corpo reflete nossos pensamentos e emoções, permitindo-nos decifrar a nós mesmos e aos outros. Uma ferramenta poderosa para aprimorar relacionamentos pessoais e profissionais." },
+            { id: 8, title: "A Dieta Ideal", price: 15.00, imageUrl: "https://i.imgur.com/aw1TJtg.png", genre: "Saúde", description: "Em 'A Dieta Ideal', o autor desmistifica os conceitos sobre alimentação saudável e apresenta um guia prático e acessível para quem busca uma vida mais equilibrada. O livro aborda temas como nutrição consciente, a importância dos macro e micronutrientes e a criação de hábitos sustentáveis, mostrando que uma dieta ideal é aquela que se adapta ao seu corpo, não o contrário." }
         ];
 
         // Referências aos elementos do DOM
@@ -170,11 +162,8 @@
         const detailsBookTitle = document.getElementById('details-book-title');
         const detailsBookDescription = document.getElementById('details-book-description');
         const detailsAddBtn = document.getElementById('details-add-to-cart-btn');
-        
         const checkoutModal = document.getElementById('checkout-modal');
         const closeModalBtn = document.getElementById('close-modal-btn');
-        
-        // Novos elementos do carrinho
         const cartIconBtn = document.getElementById('cart-icon-btn');
         const cartCount = document.getElementById('cart-count');
         const cartModal = document.getElementById('cart-modal');
@@ -182,35 +171,164 @@
         const cartItemsContainer = document.getElementById('cart-items');
         const cartTotalSpan = document.getElementById('cart-total');
         const checkoutFromCartBtn = document.getElementById('checkout-from-cart-btn');
+        const messageBox = document.getElementById('message-box');
+        const checkoutTotalSpan = document.getElementById('checkout-total');
+        const pixQrCodeImg = document.getElementById('pix-qr-code');
 
-        // Estado do carrinho
-        let cart = [];
+        // Message Box function to avoid `alert()`
+        function showMessage(message, duration = 3000) {
+            messageBox.textContent = message;
+            messageBox.classList.remove('hidden');
+            messageBox.classList.add('opacity-100');
+            setTimeout(() => {
+                messageBox.classList.remove('opacity-100');
+                messageBox.classList.add('opacity-0');
+                setTimeout(() => {
+                    messageBox.classList.add('hidden');
+                }, 300);
+            }, duration);
+        }
 
-        // Função para adicionar item ao carrinho
-        function addToCart(book) {
-            const existingItem = cart.find(item => item.id === book.id);
-            if (existingItem) {
-                existingItem.quantity++;
+        // --- FIREBASE INTEGRATION ---
+
+        // Handle user authentication
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                userId = user.uid;
+                console.log("User authenticated:", userId);
+                // Pre-populate the public books collection if it's empty
+                await seedBooks();
+                // Start listening for book and cart data
+                listenForBooks();
+                listenForCart();
+                renderGenreButtons();
+                renderBooks();
             } else {
-                cart.push({ ...book, quantity: 1 });
+                // Sign in anonymously if not authenticated
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
             }
-            updateCartDisplay();
+        });
+
+        // Seed the public books collection
+        async function seedBooks() {
+            const booksCollectionRef = collection(db, "artifacts", appId, "public", "data", "books");
+            const snapshot = await getCountFromServer(booksCollectionRef);
+            if (snapshot.data().count === 0) {
+                console.log("Seeding books collection...");
+                for (const book of predefinedBooks) {
+                    await setDoc(doc(booksCollectionRef, String(book.id)), book);
+                }
+            }
         }
 
-        // Função para remover item do carrinho
-        function removeFromCart(bookId) {
-            cart = cart.filter(item => item.id !== bookId);
-            updateCartDisplay();
-            renderCartItems();
+        // Listen for real-time updates to the public books collection
+        function listenForBooks() {
+            const booksCollectionRef = collection(db, "artifacts", appId, "public", "data", "books");
+            onSnapshot(booksCollectionRef, (snapshot) => {
+                books = snapshot.docs.map(doc => doc.data());
+                console.log("Books updated:", books);
+                // The genre buttons will handle rendering the books, so no render call here
+            }, (error) => {
+                console.error("Error listening to books collection:", error);
+                showMessage("Erro ao carregar os livros. Tente novamente.");
+            });
         }
 
-        // Atualiza o contador de itens no carrinho
-        function updateCartDisplay() {
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        // Listen for real-time updates to the user's cart
+        function listenForCart() {
+            if (!userId) return;
+            const cartRef = doc(db, "artifacts", appId, "users", userId, "cart", "userCart");
+            onSnapshot(cartRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const cartData = docSnap.data();
+                    const cartItems = JSON.parse(cartData.items);
+                    cartItemsContainer.innerHTML = '';
+                    if (cartItems.length > 0) {
+                      renderCartItems(cartItems);
+                    } else {
+                      cartItemsContainer.innerHTML = '<p class="text-center text-gray-500">Seu carrinho está vazio.</p>';
+                      cartTotalSpan.textContent = 'R$ 0,00';
+                    }
+                } else {
+                    // Cart does not exist, initialize it
+                    cartItemsContainer.innerHTML = '<p class="text-center text-gray-500">Seu carrinho está vazio.</p>';
+                    cartTotalSpan.textContent = 'R$ 0,00';
+                }
+                updateCartDisplay();
+            }, (error) => {
+                console.error("Error listening to cart:", error);
+                showMessage("Erro ao carregar o carrinho.");
+            });
+        }
+
+        // Add item to cart and save to Firestore
+        async function addToCart(book) {
+            if (!userId) {
+                showMessage("Autenticando usuário... Tente novamente em instantes.");
+                return;
+            }
+            const cartRef = doc(db, "artifacts", appId, "users", userId, "cart", "userCart");
+            try {
+                const docSnap = await getDoc(cartRef);
+                let currentCartItems = [];
+                if (docSnap.exists()) {
+                    currentCartItems = JSON.parse(docSnap.data().items);
+                }
+
+                const existingItem = currentCartItems.find(item => item.id === book.id);
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    currentCartItems.push({ ...book, quantity: 1 });
+                }
+
+                await setDoc(cartRef, { items: JSON.stringify(currentCartItems) });
+                showMessage(`${book.title} adicionado ao carrinho!`);
+            } catch (error) {
+                console.error("Error adding to cart:", error);
+                showMessage("Erro ao adicionar item ao carrinho.");
+            }
+        }
+
+        // Remove item from cart and save to Firestore
+        async function removeFromCart(bookId) {
+            if (!userId) {
+                showMessage("Autenticando usuário... Tente novamente em instantes.");
+                return;
+            }
+            const cartRef = doc(db, "artifacts", appId, "users", userId, "cart", "userCart");
+            try {
+                const docSnap = await getDoc(cartRef);
+                if (docSnap.exists()) {
+                    let currentCartItems = JSON.parse(docSnap.data().items);
+                    currentCartItems = currentCartItems.filter(item => item.id !== bookId);
+                    await setDoc(cartRef, { items: JSON.stringify(currentCartItems) });
+                    showMessage("Item removido do carrinho.");
+                }
+            } catch (error) {
+                console.error("Error removing from cart:", error);
+                showMessage("Erro ao remover item do carrinho.");
+            }
+        }
+
+        // Update cart display (count on icon) from Firestore
+        async function updateCartDisplay() {
+            if (!userId) return;
+            const cartRef = doc(db, "artifacts", appId, "users", userId, "cart", "userCart");
+            const docSnap = await getDoc(cartRef);
+            let totalItems = 0;
+            if (docSnap.exists()) {
+                const cartItems = JSON.parse(docSnap.data().items);
+                totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+            }
             cartCount.textContent = totalItems;
         }
 
-        // Função para animar a imagem do livro até o carrinho
+        // Function to animate the book image to the cart
         function flyToCart(startElement, imageUrl) {
             const startRect = startElement.getBoundingClientRect();
             const endRect = cartIconBtn.getBoundingClientRect();
@@ -223,7 +341,6 @@
             
             document.body.appendChild(animatedImage);
 
-            // Trigger the animation
             setTimeout(() => {
                 animatedImage.style.top = `${endRect.top}px`;
                 animatedImage.style.left = `${endRect.left}px`;
@@ -231,16 +348,19 @@
                 animatedImage.style.opacity = '0';
             }, 10);
 
-            // Remove the animated element after the animation is complete
             animatedImage.addEventListener('transitionend', () => {
                 animatedImage.remove();
             });
         }
 
-        // Renderiza os livros na página
-        function renderBooks() {
+        // Renderiza os livros na página a partir do array 'books' do Firestore
+        function renderBooks(booksToRender = predefinedBooks) {
             bookGrid.innerHTML = '';
-            books.forEach(book => {
+            if (booksToRender.length === 0) {
+                bookGrid.innerHTML = '<p class="text-center text-gray-200 col-span-full">Nenhum livro encontrado para este gênero.</p>';
+                return;
+            }
+            booksToRender.forEach(book => {
                 const bookCard = document.createElement('div');
                 bookCard.className = "bg-white rounded-xl shadow-lg hover:shadow-xl flex flex-col transition-all duration-300 overflow-hidden cursor-pointer book-card";
                 
@@ -253,21 +373,18 @@
                         <p class="text-gray-600 mt-1 mb-3 line-clamp-2">${book.description}</p>
                         <div class="flex-grow"></div>
                         <p class="text-2xl font-bold text-gray-800 mb-4">R$ ${book.price.toFixed(2)}</p>
-                        <button class="add-to-cart-btn w-full bg-indigo-600 text-white font-bold py-2 px-4 rounded-xl hover:bg-indigo-700 transition-colors">
+                        <button class="add-to-cart-btn w-full bg-emerald-600 text-white font-bold py-2 px-4 rounded-xl hover:bg-emerald-700 transition-colors">
                             Adicionar ao Carrinho
                         </button>
                     </div>
                 `;
                 
-                // Evento para abrir o modal de detalhes
                 bookCard.querySelector('.book-image-container').addEventListener('click', () => openDetailsModal(book));
-
-                // Evento para adicionar ao carrinho com animação
                 bookCard.querySelector('.add-to-cart-btn').addEventListener('click', (event) => {
                     event.stopPropagation();
+                    const bookImageElement = bookCard.querySelector('.book-image');
                     addToCart(book);
-                    // A animação começa a partir do botão
-                    flyToCart(event.target, book.imageUrl);
+                    flyToCart(bookImageElement, book.imageUrl);
                 });
 
                 bookGrid.appendChild(bookCard);
@@ -275,14 +392,13 @@
         }
 
         // Renderiza os itens dentro do modal do carrinho
-        function renderCartItems() {
+        function renderCartItems(cartItems) {
             cartItemsContainer.innerHTML = '';
-            if (cart.length === 0) {
+            let total = 0;
+            if (cartItems.length === 0) {
                 cartItemsContainer.innerHTML = '<p class="text-center text-gray-500">Seu carrinho está vazio.</p>';
-                cartTotalSpan.textContent = 'R$ 0,00';
             } else {
-                let total = 0;
-                cart.forEach(item => {
+                cartItems.forEach(item => {
                     total += item.price * item.quantity;
                     const itemDiv = document.createElement('div');
                     itemDiv.className = "flex items-center justify-between bg-gray-50 p-3 rounded-xl shadow-sm";
@@ -303,8 +419,8 @@
                     itemDiv.querySelector('.remove-from-cart-btn').addEventListener('click', () => removeFromCart(item.id));
                     cartItemsContainer.appendChild(itemDiv);
                 });
-                cartTotalSpan.textContent = `R$ ${total.toFixed(2)}`;
             }
+            cartTotalSpan.textContent = `R$ ${total.toFixed(2)}`;
         }
 
         // Abre o modal de detalhes do livro
@@ -312,10 +428,9 @@
             detailsBookImage.src = book.imageUrl;
             detailsBookTitle.textContent = book.title;
             detailsBookDescription.textContent = book.description;
-            detailsModal.dataset.bookId = book.id;
-            detailsAddBtn.onclick = (event) => {
+            detailsAddBtn.onclick = () => {
                 addToCart(book);
-                flyToCart(event.target, book.imageUrl);
+                flyToCart(detailsBookImage, book.imageUrl);
                 detailsModal.classList.add('hidden');
             };
             detailsModal.classList.remove('hidden');
@@ -323,7 +438,6 @@
 
         // Abre o modal de carrinho
         function openCartModal() {
-            renderCartItems();
             cartModal.classList.remove('hidden');
         }
 
@@ -337,9 +451,37 @@
             cartModal.classList.add('hidden');
         });
 
-        // Abre o modal de checkout
-        function openCheckoutModal() {
+        // Abre o modal de checkout e calcula o total, gerando o QR Code
+        async function openCheckoutModal() {
             cartModal.classList.add('hidden');
+            if (!userId) {
+                showMessage("Autenticando usuário... Tente novamente em instantes.");
+                return;
+            }
+            const cartRef = doc(db, "artifacts", appId, "users", userId, "cart", "userCart");
+            try {
+                const docSnap = await getDoc(cartRef);
+                let total = 0;
+                if (docSnap.exists()) {
+                    const cartData = docSnap.data();
+                    const cartItems = JSON.parse(cartData.items);
+                    total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                }
+                const totalFormatted = total.toFixed(2).replace('.', ',');
+                checkoutTotalSpan.textContent = `R$ ${totalFormatted}`;
+                
+                // Simula a geração de um QR Code Pix com o valor dinâmico
+                const pixKey = "11940600244"; // Chave Pix simulada
+                // A linha abaixo inclui o valor total no QR Code para que o app de pagamento o detecte automaticamente.
+                const qrCodeData = `Total: R$ ${totalFormatted} - Chave: ${pixKey}`;
+                const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrCodeData)}`;
+                
+                pixQrCodeImg.src = qrCodeUrl;
+
+            } catch (error) {
+                console.error("Error calculating checkout total:", error);
+                showMessage("Erro ao calcular o total da compra.");
+            }
             checkoutModal.classList.remove('hidden');
         }
 
@@ -354,8 +496,32 @@
         // Evento para finalizar a compra a partir do carrinho
         checkoutFromCartBtn.addEventListener('click', openCheckoutModal);
 
-        // Inicializa a renderização dos livros
-        document.addEventListener('DOMContentLoaded', renderBooks);
+        // Renderiza os botões de gêneros
+        function renderGenreButtons() {
+            const genres = ["Todos", ...new Set(predefinedBooks.map(book => book.genre))];
+            const genreButtonsContainer = document.getElementById('genre-buttons');
+            genreButtonsContainer.innerHTML = '';
+            genres.forEach(genre => {
+                const button = document.createElement('button');
+                button.textContent = genre;
+                // Diminui o tamanho do texto e o espaçamento para uma aparência mais compacta
+                button.className = "text-xs font-semibold px-2 py-1 rounded border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white transition-colors duration-300 whitespace-nowrap";
+                button.addEventListener('click', () => {
+                    filterBooksByGenre(genre);
+                });
+                genreButtonsContainer.appendChild(button);
+            });
+        }
+
+        // Filtra os livros por gênero
+        function filterBooksByGenre(genre) {
+            if (genre === "Todos") {
+                renderBooks(predefinedBooks);
+            } else {
+                const filtered = predefinedBooks.filter(book => book.genre === genre);
+                renderBooks(filtered);
+            }
+        }
     </script>
 </body>
 </html>
